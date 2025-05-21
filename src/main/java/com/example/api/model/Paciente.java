@@ -23,7 +23,7 @@ public class Paciente {
     @Column(nullable = false)
     private Integer idade;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 11)
     @JsonSerialize(using = CpfSerializer.class)
     private String cpf;
 
