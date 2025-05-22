@@ -1,6 +1,7 @@
 package com.example.api.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -57,6 +58,17 @@ public class GlobalExceptionHandler {
         return new ApiErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage(),
                 request.getRequestURI(),
                 method.getMethod().getName(),
-                ZonedDateTime.now());    }
+                ZonedDateTime.now());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ApiErrorResponse handlerHttpMessageNotReadableException(HttpMessageNotReadableException exception, HttpServletRequest request, HandlerMethod method) {
+        return new ApiErrorResponse(HttpStatus.BAD_REQUEST, "Formato ou valores informados incorretos, verifique",
+                request.getRequestURI(),
+                method.getMethod().getName(),
+                ZonedDateTime.now());
+
+    }
 
 }
