@@ -2,11 +2,14 @@ package com.example.api.model;
 
 import com.example.api.utils.Cpf.CpfSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +21,7 @@ public class Paciente {
     private UUID id;
 
     @Column(nullable = false)
+
     private String nome;
 
     @Column(nullable = false)
@@ -37,10 +41,15 @@ public class Paciente {
     @Column(nullable = false)
     private String endereco;
 
+
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
+    @JsonManagedReference("paciente-consultas")
+    private Set<Consulta> consultas = new HashSet<>();
+
     public Paciente() {
     }
 
-    public Paciente(UUID id, String nome, Integer idade, String cpf, LocalDate dataNascimento, String contato, String endereco) {
+    public Paciente(UUID id, String nome, Integer idade, String cpf, LocalDate dataNascimento, String contato, String endereco, Set<Consulta> consultas) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;
@@ -48,6 +57,7 @@ public class Paciente {
         this.dataNascimento = dataNascimento;
         this.contato = contato;
         this.endereco = endereco;
+        this.consultas = consultas;
     }
 
     public UUID getId() {
@@ -104,5 +114,13 @@ public class Paciente {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public Set<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(Set<Consulta> consultas) {
+        this.consultas = consultas;
     }
 }

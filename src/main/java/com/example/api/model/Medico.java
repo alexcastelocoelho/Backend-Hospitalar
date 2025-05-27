@@ -1,9 +1,12 @@
 package com.example.api.model;
 
 import com.example.api.utils.Cpf.CpfSerializer;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -33,10 +36,14 @@ public class Medico {
     @Column(nullable = false)
     private String email;
 
+    @OneToMany(mappedBy = "medico", fetch = FetchType.LAZY)
+    @JsonManagedReference("medico-consultas")
+    private Set<Consulta> consultas = new HashSet<>();
+
     public Medico() {
     }
 
-    public Medico(UUID id, String nome, String numeroConselho, String cpf, String contato, String endereco, String email) {
+    public Medico(UUID id, String nome, String numeroConselho, String cpf, String contato, String endereco, String email, Set<Consulta> consultas) {
         this.id = id;
         this.nome = nome;
         this.numeroConselho = numeroConselho;
@@ -44,6 +51,7 @@ public class Medico {
         this.contato = contato;
         this.endereco = endereco;
         this.email = email;
+        this.consultas = consultas;
     }
 
     public UUID getId() {
@@ -100,5 +108,13 @@ public class Medico {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(Set<Consulta> consultas) {
+        this.consultas = consultas;
     }
 }
