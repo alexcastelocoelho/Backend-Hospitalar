@@ -1,5 +1,6 @@
 package com.example.api.model;
 
+import com.example.api.utils.StatusConsulta;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -36,12 +37,13 @@ public class Consulta {
 
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusConsulta status;
 
     public Consulta() {
     }
 
-    public Consulta(UUID id, LocalDate dataConsulta, LocalTime horaConsulta, Paciente paciente, Medico medico, String status) {
+    public Consulta(UUID id, LocalDate dataConsulta, LocalTime horaConsulta, Paciente paciente, Medico medico, StatusConsulta status) {
         this.id = id;
         this.dataConsulta = dataConsulta;
         this.horaConsulta = horaConsulta;
@@ -90,11 +92,11 @@ public class Consulta {
         this.medico = medico;
     }
 
-    public String getStatus() {
+    public StatusConsulta getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusConsulta status) {
         this.status = status;
     }
 }

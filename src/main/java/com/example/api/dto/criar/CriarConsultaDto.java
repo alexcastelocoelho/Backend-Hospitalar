@@ -2,6 +2,7 @@ package com.example.api.dto.criar;
 
 import com.example.api.model.Medico;
 import com.example.api.model.Paciente;
+import com.example.api.utils.StatusConsulta;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -30,8 +31,8 @@ public record CriarConsultaDto(
         @NotNull(message = "Informe o medico da consulta")
         Medico medico,
 
-        @NotBlank(message = "Informe o status da consulta")
-        String status
+        @NotNull(message = "Informe o status da consulta")
+        StatusConsulta status
 
 ) {
 }
