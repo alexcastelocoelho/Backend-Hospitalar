@@ -31,7 +31,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/registro").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/paciente").hasAnyRole("ADMIN", "ATENDENTE")
                         .requestMatchers(HttpMethod.GET, "/paciente").hasAnyRole("ADMIN", "ATENDENTE", "MEDICO")
@@ -58,7 +59,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/consulta").hasAnyRole("ADMIN", "ATENDENTE", "MEDICO", "PACIENTE")
                         .requestMatchers(HttpMethod.DELETE, "/consulta").hasAnyRole("ADMIN", "ATENDENTE")
                         .anyRequest().authenticated()
-
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
