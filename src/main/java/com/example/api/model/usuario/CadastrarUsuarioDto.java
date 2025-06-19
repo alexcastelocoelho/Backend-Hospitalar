@@ -9,11 +9,11 @@ public record CadastrarUsuarioDto(
 
         @Email(message = "Informe um e-mail valido")
         @NotBlank(message = "Obrigario informar o e-mail.")
-        String login,
+        String email,
 
         @NotBlank(message = "Defina sua senha")
         @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres.")
-        String password,
+        String senha,
 
         @NotNull(message = "Defina o tipo de usuario ")
         UserRole role

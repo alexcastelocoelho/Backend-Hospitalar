@@ -17,9 +17,9 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String login;
+    private String email;
 
-    private String password;
+    private String senha;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -27,16 +27,16 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
-    public Usuario(String login, String password, UserRole role) {
-        this.login = login;
-        this.password = password;
+    public Usuario(String email, String senha, UserRole role) {
+        this.email = email;
+        this.senha = senha;
         this.role = role;
     }
 
-    public Usuario(UUID id, String login, String password, UserRole role) {
+    public Usuario(UUID id, String email, String senha, UserRole role) {
         this.id = id;
-        this.login = login;
-        this.password = password;
+        this.email = email;
+        this.senha = senha;
         this.role = role;
     }
 
@@ -48,17 +48,24 @@ public class Usuario implements UserDetails {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getSenha() {
+        return senha;
     }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+
 
     public UserRole getRole() {
         return role;
@@ -80,12 +87,12 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override
