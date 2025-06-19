@@ -6,7 +6,10 @@ import com.example.api.model.usuario.LoginRespostaDTO;
 import com.example.api.model.usuario.CadastrarUsuarioDto;
 import com.example.api.model.usuario.Usuario;
 import com.example.api.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Autenticacao", description = "operações/endpoints para autenticacao no sistema")
 public class AuthenticationController {
 
     final AuthenticationManager authenticationManager;
@@ -31,8 +36,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "login no sistema", description = "endpoint para realizar login no sistema")
     public ResponseEntity<LoginRespostaDTO> login(@RequestBody @Valid RealizarLoginDto loginDto) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.login(), loginDto.password());
+        var usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.senha());
         var auth = authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((Usuario) auth.getPrincipal());
@@ -41,14 +47,15 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginRespostaDTO(token));
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registro")
+    @Operation(summary = "cadastrar novo usuario", description = "endpoint para cadastrar um novo usuario no sistema")
     public ResponseEntity<Void> register(@RequestBody @Valid CadastrarUsuarioDto usuarioCadastroDto) {
 
-        if (usuarioRepository.findByLogin(usuarioCadastroDto.login()).isPresent()) {
-            return ResponseEntity.badRequest().build();
+        if (usuarioRepository.findByEmail(usuarioCadastroDto.email()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-        String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioCadastroDto.password());
-        Usuario usuario = new Usuario(usuarioCadastroDto.login(), encryptedPassword, usuarioCadastroDto.role());
+        String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioCadastroDto.senha());
+        Usuario usuario = new Usuario(usuarioCadastroDto.email(), encryptedPassword, usuarioCadastroDto.role());
 
         usuarioRepository.save(usuario);
 
