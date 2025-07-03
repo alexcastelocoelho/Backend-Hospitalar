@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    container_name: postgres-container
+    restart: always
+    environment:
+      POSTGRES_DB: database_hospitalar
+      POSTGRES_USER: my_user
+      POSTGRES_PASSWORD: passe@
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: springboot-app
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/database_hospitalar
+      SPRING_DATASOURCE_USERNAME: my_user
+      SPRING_DATASOURCE_PASSWORD: passe@
+    ports:
+      - "8080:8080"
+
