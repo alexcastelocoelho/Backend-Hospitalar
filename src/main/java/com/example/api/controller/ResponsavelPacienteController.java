@@ -1,5 +1,6 @@
 package com.example.api.controller;
 
+import com.example.api.dto.CustomPageResponseDto;
 import com.example.api.dto.atualizar.AtualizarResponsavelPacienteDto;
 import com.example.api.dto.criar.CriarResponsavelPacienteDto;
 import com.example.api.model.ResponsavelPaciente;
@@ -36,7 +37,7 @@ public class ResponsavelPacienteController {
 
     @GetMapping
     @Operation(summary = "listar responsaveis", description = "endpoint para listagem de responsaveis com opção de paginação")
-    public ResponseEntity<Page<ResponsavelPaciente>> listarResponsavelPacientes(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+    public ResponseEntity<CustomPageResponseDto<ResponsavelPaciente>> listarResponsavelPacientes(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
         var responsavelPacientes = responsavelPacienteService.listarResponsavelPacientes(pageable);
         return new ResponseEntity<>(responsavelPacientes, HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.dto.CustomPageResponseDto;
 import com.example.api.dto.atualizar.AtualizarConsultaDto;
 import com.example.api.dto.criar.CriarConsultaDto;
 import com.example.api.exception.ResourceNotFound;
@@ -28,8 +29,10 @@ public class ConsultaService {
         return consultaRepository.save(consulta);
     }
 
-    public Page<Consulta> listarConsultas(Pageable pageable) {
-        return consultaRepository.findAll(pageable);
+    public CustomPageResponseDto<Consulta> listarConsultas(Pageable pageable) {
+        Page<Consulta> consultas  = consultaRepository.findAll(pageable);
+        return new CustomPageResponseDto<>(consultas.getContent(), consultas.getNumber(), consultas.getSize(), consultas.getTotalElements(), consultas.getTotalPages(), consultas.isFirst(), consultas.isLast());
+
     }
 
 

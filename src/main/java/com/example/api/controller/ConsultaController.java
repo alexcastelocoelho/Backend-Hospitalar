@@ -1,5 +1,6 @@
 package com.example.api.controller;
 
+import com.example.api.dto.CustomPageResponseDto;
 import com.example.api.dto.atualizar.AtualizarConsultaDto;
 import com.example.api.dto.criar.CriarConsultaDto;
 import com.example.api.model.Consulta;
@@ -37,7 +38,7 @@ public class ConsultaController {
 
     @GetMapping
     @Operation(summary = "listar consultas", description = "endpoint para listagem de consultas com opção de paginação")
-    public ResponseEntity<Page<Consulta>> listarConsultas(@PageableDefault(size = 10, sort = "status") Pageable pageable) {
+    public ResponseEntity<CustomPageResponseDto<Consulta>> listarConsultas(@PageableDefault(size = 10, sort = "status") Pageable pageable) {
         var consultas = consultaService.listarConsultas(pageable);
         return new ResponseEntity<>(consultas, HttpStatus.OK);
     }

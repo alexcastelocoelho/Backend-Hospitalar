@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.dto.CustomPageResponseDto;
 import com.example.api.dto.atualizar.AtualizarPacienteDto;
 import com.example.api.dto.criar.CriarPacienteDto;
 import com.example.api.exception.CpfException;
@@ -34,8 +35,11 @@ public class PacienteService {
         return pacienteRepository.save(paciente);
     }
 
-    public Page<Paciente> listarPaciente(Pageable pageable) {
-        return pacienteRepository.findAll(pageable);
+    public CustomPageResponseDto<Paciente> listarPaciente(Pageable pageable) {
+        Page<Paciente> pacientes = pacienteRepository.findAll(pageable);
+        return new CustomPageResponseDto<>(pacientes.getContent(), pacientes.getNumber(), pacientes.getSize(), pacientes.getTotalElements(), pacientes.getTotalPages(), pacientes.isFirst(), pacientes.isLast());
+
+
     }
 
 

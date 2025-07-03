@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.dto.CustomPageResponseDto;
 import com.example.api.dto.atualizar.AtualizarResponsavelPacienteDto;
 import com.example.api.dto.criar.CriarResponsavelPacienteDto;
 import com.example.api.exception.CpfException;
@@ -33,8 +34,9 @@ public class ResponsavelPacienteService {
         return responsavelPacienteRepository.save(responsavel);
     }
 
-    public Page<ResponsavelPaciente> listarResponsavelPacientes(Pageable pageable) {
-        return responsavelPacienteRepository.findAll(pageable);
+    public CustomPageResponseDto<ResponsavelPaciente> listarResponsavelPacientes(Pageable pageable) {
+        Page<ResponsavelPaciente> responsavelPacientes = responsavelPacienteRepository.findAll(pageable);
+        return new CustomPageResponseDto<>(responsavelPacientes.getContent(), responsavelPacientes.getNumber(), responsavelPacientes.getSize(), responsavelPacientes.getTotalElements(), responsavelPacientes.getTotalPages(), responsavelPacientes.isFirst(), responsavelPacientes.isLast());
     }
 
     public ResponsavelPaciente listarUmResponsavelPaciente(UUID id) {
