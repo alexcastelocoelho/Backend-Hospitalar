@@ -53,19 +53,23 @@
 1. Clone este repositório para uma pasta do seu computador:
 
 
-`git clone https://github.com/alexcastelocoelho/Backend-Hospitalar`
+```
+git clone https://github.com/alexcastelocoelho/Backend-Hospitalar
+```
 
-
+ Obs: A duas formas para rodar o projeto, usando configuração de banco de dados local na sua máquina ou usando docker.
+Irei demonstrar logo abaixo para melhor entendimento:
 <br>
 
-2. Dentro do projeto existe um arquivo `env.properties.example`, renomeie para `env.properties`. Dentro dele configure suas credencias de banco de dados como no exemplo abaixo:
+### 2.1 usando banco de dados localmente
+Dentro do projeto existe um arquivo `env.properties.example`, renomeie para `env.properties`. Dentro dele configure suas credencias de banco de dados como no exemplo abaixo:
 
 ```
 DB_DATABASE=mydatabase
 DB_USER=myuser
 DB_PASSWORD=mypassaword
 ```
-Após fazer essa configuração o application.properties estará inserindo essas variáveis de ambiente desse arquivo e configurando dentro dele conforme abaixo:
+Após fazer essa configuração o application-configLocal.properties estará inserindo essas variáveis de ambiente desse arquivo e configurando dentro dele conforme abaixo:
 <br>
 
 ```
@@ -84,10 +88,34 @@ spring.jpa.show-sql=true
 api.security.token.secret=${JWT_SECRET:my-secret-key}
 ```
 
-3. Execute o projeto:
+Feito isso, dentro do application.properties, insira a seguinte linha de codigo para configura o perfil *configLocal* para uso na aplicação:
+```
+spring.profiles.active=configLocal
+```
+
+Por fim, Execute o projeto pelo terminal com o comando abaixo ou usando a sua IDE de preferência:
 
 
 `mvnw spring-boot:run`
+
+
+### 2.2 Rodar usando docker
+Dentro do arquivo application.properties, insira a seguinte linha de codigo para carregar a configução docker do perfil *configDocker*
+```
+spring.profiles.active=configDocker
+```
+
+Execute o seguinte comando para gerar o jar da aplicação:
+```
+mvn clean package -DskipTests
+```
+
+Depois, execute o docker-compose usando o comando:
+```
+docker-compose up --build
+```
+
+
 
 <br>
 
@@ -317,7 +345,7 @@ http://localhost:8080/paciente
 {
 	"content": [
 		{
-			"id": "446ba4ab-293a-4389-bf6f-ec296b752af3",
+			"id": "f4f0cfcd-0bc1-4278-a157-9caf6ad6472c",
 			"nome": "Joao Pereira",
 			"idade": 3,
 			"cpf": "630.681.880-40",
@@ -327,7 +355,7 @@ http://localhost:8080/paciente
 			"consultas": []
 		},
 		{
-			"id": "4a27b3c0-4fdd-4281-994a-0b50245b8e78",
+			"id": "d2f9a54f-b0af-4fe7-8a49-37841e0aa91f",
 			"nome": "Leandro gomes",
 			"idade": 20,
 			"cpf": "477.184.090-31",
@@ -337,31 +365,12 @@ http://localhost:8080/paciente
 			"consultas": []
 		}
 	],
-	"pageable": {
-		"pageNumber": 0,
-		"pageSize": 10,
-		"sort": {
-			"empty": false,
-			"unsorted": false,
-			"sorted": true
-		},
-		"offset": 0,
-		"paged": true,
-		"unpaged": false
-	},
-	"last": true,
-	"totalPages": 1,
-	"totalElements": 2,
+	"page": 0,
 	"size": 10,
-	"number": 0,
-	"sort": {
-		"empty": false,
-		"unsorted": false,
-		"sorted": true
-	},
+	"totalElements": 2,
+	"totalPages": 1,
 	"first": true,
-	"numberOfElements": 2,
-	"empty": false
+	"last": true
 }
 ```
 
@@ -647,7 +656,7 @@ http://localhost:8080/responsavel
 {
 	"content": [
 		{
-			"id": "3c9c37e1-e35b-47f8-bb20-00c0889ca35c",
+			"id": "2f3d20a6-b44b-4d9d-9925-a8a3530f144e",
 			"nome": "Aline gomes",
 			"cpf": "304.740.810-60",
 			"dataNascimento": "15/06/1980",
@@ -656,31 +665,12 @@ http://localhost:8080/responsavel
 			"endereco": "Rua dos santos drumonde"
 		}
 	],
-	"pageable": {
-		"pageNumber": 0,
-		"pageSize": 10,
-		"sort": {
-			"empty": false,
-			"sorted": true,
-			"unsorted": false
-		},
-		"offset": 0,
-		"paged": true,
-		"unpaged": false
-	},
+	"page": 0,
+	"size": 10,
 	"totalElements": 1,
 	"totalPages": 1,
-	"last": true,
-	"size": 10,
-	"number": 0,
-	"sort": {
-		"empty": false,
-		"sorted": true,
-		"unsorted": false
-	},
 	"first": true,
-	"numberOfElements": 1,
-	"empty": false
+	"last": true
 }
 ```
 
@@ -949,17 +939,7 @@ http://localhost:8080/medico
 {
 	"content": [
 		{
-			"id": "93119e99-4b86-4548-9b2d-d1cf87593e8b",
-			"nome": "Adriano Almeida",
-			"numeroConselho": "CRM-PA 457689",
-			"cpf": "017.650.960-73",
-			"contato": "91934658792",
-			"endereco": "Rua dos assis",
-			"email": "meidaJunior@gmail.com",
-			"consultas": []
-		},
-		{
-			"id": "ebdb0056-bfae-43c5-99a6-420793cc29d4",
+			"id": "1c5ea6da-2e01-4ea1-aa23-9178f7d74ab8",
 			"nome": "Lucas Silva",
 			"numeroConselho": "CRM-MA 457689",
 			"cpf": "242.980.170-10",
@@ -969,31 +949,12 @@ http://localhost:8080/medico
 			"consultas": []
 		}
 	],
-	"pageable": {
-		"pageNumber": 0,
-		"pageSize": 10,
-		"sort": {
-			"empty": false,
-			"sorted": true,
-			"unsorted": false
-		},
-		"offset": 0,
-		"paged": true,
-		"unpaged": false
-	},
-	"totalElements": 2,
-	"totalPages": 1,
-	"last": true,
+	"page": 0,
 	"size": 10,
-	"number": 0,
-	"sort": {
-		"empty": false,
-		"sorted": true,
-		"unsorted": false
-	},
+	"totalElements": 1,
+	"totalPages": 1,
 	"first": true,
-	"numberOfElements": 2,
-	"empty": false
+	"last": true
 }
 ```
 
@@ -1257,43 +1218,18 @@ http://localhost:8080/consulta
 {
 	"content": [
 		{
-			"id": "c0768c7f-a47c-490f-8211-30b4c374f107",
-			"dataConsulta": "25/06/2025",
-			"horaConsulta": "15:35",
-			"status": "AGENDADA"
-		},
-		{
-			"id": "9fa910fe-cd21-4204-95e9-942282d1ddec",
+			"id": "990ff32e-5044-403a-87aa-14076dc53bf0",
 			"dataConsulta": "10/07/2025",
 			"horaConsulta": "15:35",
 			"status": "CONFIRMADA"
 		}
 	],
-	"pageable": {
-		"pageNumber": 0,
-		"pageSize": 10,
-		"sort": {
-			"empty": false,
-			"sorted": true,
-			"unsorted": false
-		},
-		"offset": 0,
-		"paged": true,
-		"unpaged": false
-	},
-	"totalElements": 2,
-	"totalPages": 1,
-	"last": true,
+	"page": 0,
 	"size": 10,
-	"number": 0,
-	"sort": {
-		"empty": false,
-		"sorted": true,
-		"unsorted": false
-	},
+	"totalElements": 1,
+	"totalPages": 1,
 	"first": true,
-	"numberOfElements": 2,
-	"empty": false
+	"last": true
 }
 ```
 
